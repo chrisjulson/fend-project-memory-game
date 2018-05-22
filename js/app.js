@@ -1,22 +1,21 @@
-/* collect the cards and store them in an array  */ 
+/* collect the cards from the playfield and store them in an array*/ 
 let card = document.getElementsByClassName('card');
 let cards = [...card];
 console.log(cards);
 
-/* make a deck of cards to play with */
-const playDeck = document.getElementById('card-deck');
+const deckOfCards = document.getElementById('play-deck');
 
-/* global verabls */ 
-let counter = document.querySelector('.moves');
+/* global verables */ 
 let moves = 0; 
-const stars = document.querySelectorAll('fa-star');
-let gameQuality = document.querySelectorAll('.stars li');
-let matchedCards = document.getElementsByClassName('matched');
-let closeIcon = document.querySelectorAll('.close');
-let winPopOut = document.getElementById('popout');
+let counter = document.querySelector('.moves');
+const stars = document.querySelectorAll('.fa-star');
+let starList = document.querySelectorAll('.stars li');
+let matchedCards = document.getElementsByClassName("matched");
+let closeMe = document.querySelector('.close');
+let popout = document.getElementById('popout');
 let selectedCards = [];
 
-// Shuffle function from http://stackoverflow.com/a/2450976
+/* shuffle function from http://stackoverflow.com/a/2450976 */ 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -31,99 +30,100 @@ function shuffle(array) {
     return array;
 }
 
-/*calls the start function on page load */
-document.body.onload = startPairs();
 
+/* function that creates a new game. */ 
 function startPairs() {
+    /* call shuffle function to shuffle the deck */ 
     cards = shuffle(cards);
-    /* play field clean up */
-    for (var i = 0; i < cards.lenght; i++){
-        playDeck.innerHTML = '';
+    for (let i = 0; i < cards.length; i++) {
+        deckOfCards.innerHTML = '';
         [].forEach.call(cards, function(item) {
-            deck.appendChild(item);
+            deckOfCards.appendChild(item);
         });
-        cards[i].classList.remove('show', 'open', 'match', 'disable');
+        cards[i].classList.remove('show', 'open', 'disabled');
     }
-    moves = 0; 
-    moveCounter.innerHTML = moves;
+    moves = 0;
+    counter.innerHTML = moves;
 
     for (let i = 0; i < stars.length; i++) {
-        stars[i].style.color = 'd4af37';
+        stars[i].style.color = '#ddc856';
         stars[i].style.visibility = 'visible';
     }
-    second = 0;
+    second = 0; 
     minute = 0;
-    let clock = document.querySelector('.timer');
-    timer.innerHTML = '0 minutes 0 seconds';
+    hour = 0; /* shouldn't be needed but add it anyway */
+    let clock = document.querySelector('.clock');
+    clock.innerHTML = '0 min 0 sec';
     clearInterval(interval);
 }
 
-/* function to set open, show and disable to cards */ 
-let showCards = function () {
+let showCard = function () {
     this.classList.toggle('open');
     this.classList.toggle('show');
-    this.classList.toggle('disable'); /* class used to diable a second click once selected */
+    this.classList.toggle('disabled');
 };
 
-/* function used to check if selected cards are a match */ 
-function chooseCards() {
+/* function  to add choosen cards into an array and check if they match */ 
+function choosenCard() {
     selectedCards.push(this);
-    let lengh = selectedCards.length;
-    if (lengh == 2) {
+    let len = selectedCards.length;
+    if (len === 2) {
         moveCounter();
         if(selectedCards[0].type === selectedCards[1].type) {
-            matched();
+            matching();
         } else {
-            unmatched();
+            nonMatching();
         }
     }
 }
 
-function matched () {
-    selectedCards[0].classList.add('matched', 'disable');
-    selectedCards[1].classList.add('matched', 'disable');
+function matching() {
+    selectedCards[0].classList.add('matched', 'disabled');
+    selectedCards[1].classList.add('matched', 'disabled');
     selectedCards[0].classList.remove('show', 'open', 'no-event');
     selectedCards[1].classList.remove('show', 'open', 'no-event');
     selectedCards = [];
 }
 
-function unmatched () {
+function nonMatching() {
     selectedCards[0].classList.add('unmatched');
     selectedCards[1].classList.add('unmatched');
-    disable();
-    setTimeout(function(){
+    disabled();
+    setTimeout(function() {
         selectedCards[0].classList.remove('show', 'open', 'no-event', 'unmatched');
         selectedCards[1].classList.remove('show', 'open', 'no-event', 'unmatched');
         enable();
         selectedCards = [];
     },1200);
 }
-/* function to temopraraly disable cards from being selected again once selected */ 
-function disable() {
-    Array.prototype.filter.call(cards, function(card) {
-        card.classList.add('disable');
+
+/* function to disable selected cards so player can't choose the same ones twice */
+function disabled() {
+    Array.prototype.filter.call(cards, function(card){
+        card.classList.add('disabled');
     });
 }
 
-function enable() {
+/*function used to remove matched cards */
+function enable(){
     Array.prototype.filter.call(cards, function(card){
-        card.classList.remove('disable');
-        for(var i = 0; i < matchedCards.length; i++) {
-            matchedCards[i].classList.add('disable');
+        card.classList.remove('disabled');
+        for (let i = 0; i < matchedCards.length; i++){
+            matchedCards[i].classList.add('disabled');
         }
     });
 }
 
 function moveCounter() {
     moves ++;
-    moveCounter.innerHTML = moves;
+    counter.innerHTML = moves;
     if (moves == 1) {
         second = 0;
         minute = 0;
-        startTimer();
+        hour = 0;
+        startClock();
     }
-    /* setting star rate based on moves */ 
-    if (moves > 8 && mvoes < 13) {
+    if (moves > 8 && moves < 13) {
         for(i = 0; i < 3; i++) {
             if(i > 1) {
                 stars[i].style.visibility = 'collapse';
@@ -131,65 +131,74 @@ function moveCounter() {
         }
     }
     else if (moves > 14) {
-        for(i = 0; i < 3; i++) {
-            if(i > 0){
+        for (i = 0; i < 3; i++) {
+            if (i > 0) {
                 stars[i].style.visibility = 'collapse';
             }
         }
     }
 }
 
-/* clock function */ 
+/* function to keep game time */ 
 let second = 0;
 let minute = 0;
-let clock = document.querySelector('.timer');
+let hour = 0;
+let clock = document.querySelector('.clock');
 let interval;
-
 function startClock() {
     interval = setInterval(function(){
-        clock.innerHTML = minuet+'minuets '+second+"seconds";
-        second++;
-        if(second == 60) {
-            minute++;
-            second=0;
+        clock.innerHTML = minute+'min '+second+'sec';
+        second  ++;
+        if (second == 60) {
+            minute ++;
+            second = 0;
         }
-    },1000);
+        if (minute == 60) {
+            hour ++;
+            minute = 0;
+        }
+    },1200);
 }
 
-/* Player wins function */ 
-function playerWins () {
+/* win condition and show popout window displaying player score move count and time taken to solve */ 
+function playerWin() {
     if (matchedCards.length == 16) {
         clearInterval(interval);
-        compleatedIn = timer.innerHTML;
-
-        winPopOut.classList.add('show');
-
+        finishTime = clock.innerHTML;
+        popout.classList.add('show');
         let gameQuality = document.querySelector('.stars').innerHTML;
-
-        document.getElementById('movesTaken').innerHTML = moves;
+        document.getElementById('totalMoves').innerHTML = moves;
         document.getElementById('gameQuality').innerHTML = gameQuality;
-        document.getElementById('totalTime').innerHTML = compleatedIn;
+        document.getElementById('completedIn').innerHTML = finishTime;
+        closePop();
 
-        closePopOut();
     }
 }
 
-function closePopOut() {
-    closeIcon.addEventListener('click', function(evt) {
+function closePop() {
+    closeMe.addEventListener('click', function(evt){
         popout.classList.remove('show');
         startPairs();
     });
 }
 
-function playAgain() {
+function restart () {
     popout.classList.remove('show');
     startPairs();
 }
 
-/* adds listiners to each card in the deck */ 
 for (let i = 0; i < cards.length; i++) {
     card = cards[i];
-    card.addEventListener('click', showCards);
-    card.addEventListener('click', chooseCards);
-    card.addEventListener('click', playerWins);
+    card.addEventListener('click',showCard);
+    card.addEventListener('click',choosenCard);
+    card.addEventListener('click',playerWin);
 }
+
+document.body.onload = startPairs();
+
+
+/* DEBUG LIST 
+* match function not corretly matching cards, and not resetting when no match is present 
+* timer not corretly starting on first card select (starts after first pair is selected )
+* have to add pop up window to index but win condition seems to be working 
+*/ 

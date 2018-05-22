@@ -75,10 +75,27 @@ h1 {
     font-size: 33px;
 }
 
-.deck .card.match {
+.deck .card.matched {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    animation-name: rubberBand;
+	-webkit-backface-visibility: visible !important;
+	backface-visibility: visible !important;
+    animation-duration: .75s;
+}
+
+.deck .card.unmatched {
+    animation-name: pulse;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    animation-duration: .75s;
+    background: #ff0000;
+}
+
+.deck .card.disabled {
+    pointer-events: none;
+    opacity: 0.9;
 }
 
 /*

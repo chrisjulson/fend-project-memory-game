@@ -40,7 +40,11 @@ h1 {
 .deck {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: linear-gradient(216deg, #93d356, #56d364, #56d3af, #56acd3, #5661d3, 
+    #9656d3, #d356c5, #d3567a, #d37d56);
+     -webkit-animation: deckBackground 37s ease infinite; 
+    /*-moz-animation: deckBackground 37s ease infinite; */
+     animation: deckBackground 37s ease infinite; 
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -123,4 +127,22 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+
+/* animations */ 
+@-webkit-keyframes deckBackground {
+    0%{background-position:49% 0%}
+    50%{background-position:52% 100%}
+    100%{background-position:49% 0%}
+}
+@-moz-keyframes deckBackground {
+    0%{background-position:49% 0%}
+    50%{background-position:52% 100%}
+    100%{background-position:49% 0%}
+}
+@keyframes deckBackground {
+    0%{background-position:49% 0%}
+    50%{background-position:52% 100%}
+    100%{background-position:49% 0%}
 }

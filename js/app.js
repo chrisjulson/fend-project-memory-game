@@ -17,7 +17,7 @@ const stars = document.querySelectorAll('.fa-star');
 let starList = document.querySelectorAll('.stars li');
 let matchedCard = document.getElementsByClassName('match');
 let closePopUp = document.querySelector('.close');
-let popUp = document.getElementById('popUp');
+let popUp = document.getElementById('popup');
 let selectedCards = [];
 
 /* shuffle function from http://stackoverflow.com/a/2450976 */ 

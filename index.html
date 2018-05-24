@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Matching Game</title>
     <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet prefetch" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
@@ -26,7 +27,7 @@
             
             <div class="clock"></div>
 
-            <div class="restart" onclick=startGame()>
+            <div class="restart" onclick=startPairs()>
         		<i class="fas fa-redo"></i>
         	</div>
         </section>
@@ -81,6 +82,21 @@
                 <i class="fas fa-microchip"></i>
             </li>
         </ul>
+        <div id='popup' class='overlay'>
+            <div class='popup'>
+                <h2>Joy</h2>
+                <a class='close' href="#">x</a>
+                <div class='content-1'>
+                    Winner Winner Chicken Dinner!
+                </div>
+                <div class='content-2'>
+                    <p>You solved the game in <span id=totalMoves> </span> mvoes </p>
+                    <p>it took you <span id=totalTime> </span></p>
+                    <p>Your rating:   <span id=starRating></span></p>
+                </div>
+                <button id='play-again' onclick='playAgain()'>Play Aagain</button>
+            </div>
+        </div>
     </div>
 
     <script src="js/app.js"></script>

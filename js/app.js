@@ -34,13 +34,14 @@ function shuffle(array) {
 
     return array;
 }
-
+/* used so player can't click on the same card twice */ 
 function disable() {
     Array.prototype.filter.call(cards, function(card) {
         card.classList.add('disabled');
     });
 }
 
+/* re enables cards when not matched and disables them when matched */
 function enable() {
     Array.prototype.filter.call(cards, function(card) {
         card.classList.remove('disabled');
@@ -50,12 +51,14 @@ function enable() {
     });
 }
 
+/* toggle of open show and disable when player chooses a card */ 
 let cardFlip = function() {
     this.classList.toggle('open');
     this.classList.toggle('show');
     this.classList.toggle('disabled');
 };
 
+/* adds matched to selected cards and disables them and clears array for next move */
 function matched() {
     selectedCards[0].classList.add('match', 'disabled');
     selectedCards[1].classList.add('match', 'disabled');
@@ -64,6 +67,7 @@ function matched() {
     selectedCards = [];
 }
 
+/* add unmatched to cards that don't match and clears the cards for next move*/
 function unmatched() {
     selectedCards[0].classList.add('unmatched');
     selectedCards[1].classList.add('unmatched');
@@ -76,6 +80,7 @@ function unmatched() {
     },1100);
 }
 
+/* checks to see if the two selected cards are a match */ 
 function cardCheck() {
     selectedCards.push(this);
     let len = selectedCards.length;
@@ -89,6 +94,7 @@ function cardCheck() {
     }
 }
 
+/* keeps track of the amount of time played in current round */
 function startClock() {
     interval = setInterval(function() {
         clock.innerHTML = minute+"min "+second+"sec";
@@ -104,6 +110,7 @@ function startClock() {
     },1000);
 }
 
+/* keeps track of player moves and ajusts stars accordinly */ 
 function moveCounter() {
     moves ++;
     counter.innerHTML = moves;
@@ -129,7 +136,9 @@ function moveCounter() {
     }
 }
 
+/* New Game function */
 function startPairs() {
+    /* shuffle the deck */
     cards = shuffle(cards);
     for (let i = 0; i < cards.length; i++) {
         deck.innerHTML = '';
@@ -138,22 +147,29 @@ function startPairs() {
         });
         cards[i].classList.remove('show', 'open', 'match', 'disabled');
     }
+    /* resets moves */ 
     moves = 0; 
     counter.innerHTML = moves;
     for (let i = 0; i < stars.length; i++) {
         stars[i].style.color = '#daa520';
         stars[i].style.visibility = 'visible';
     }
+    /* resets play clock */ 
     second = 0;
     minute = 0;
     hour = 0; 
     let clock = document.querySelector('.clock');
     clock.innerHTML = "0 min 0 sec";
     clearInterval(interval);
+    /* clears the array of cards */ 
+    selectedCards = []; 
 }
 
+/* starts a new game on page load / page refresh */ 
 document.body.onload = startPairs();
 
+/* functions for popUp */ 
+/* add useability to the close (x) on the popUp */
 function closeMe() {
     closePopUp.addEventListener('click', function(e) {
         popUp.classList.remove('show');
@@ -161,6 +177,7 @@ function closeMe() {
     });
 }
 
+/* win condition and displays stats on the popUp */ 
 function playerWins() {
     if (matchedCard.length == 16) {
         clearInterval(interval);
@@ -174,11 +191,13 @@ function playerWins() {
     }
 }
 
+/* restars the game when the playagain button is pressed */ 
 function playAgain () {
     popUp.classList.remove('show');
     startPairs();
 }
 
+/* add eventlistiners to all cards */ 
 for (let i = 0; i < cards.length; i++) {
     card = cards[i];
     card.addEventListener('click', cardFlip);
@@ -188,6 +207,5 @@ for (let i = 0; i < cards.length; i++) {
 
 /* DEBUG LIST 
 * timeout portion of function not working not sure why 
-* popup not working (due to popup html no present yet)
 * try and get timer to start on load rather than first move 
 */
